@@ -26,12 +26,18 @@ const DaysWeather = function(forecast, time) {
 // Function for getting all the daily weather
 function getDailyWeather(weatherData){
   let data = weatherData.daily.data;
-  console.log(data);
   const dailyWeather = data.map(element => (new DaysWeather(element.summary, element.time)));
-  console.log(dailyWeather);
 
   return dailyWeather;
 }
+
+// Constructor for events
+const Event = function(link, name, event_date, summary) {
+  this.link = link;
+  this.name = name;
+  this.event_date = event_date;
+  this.summary = summary;
+};
 
 // Function for handling errors
 function errorHandling(error, status, response){
@@ -77,6 +83,30 @@ app.get('/weather', (request, response) => {
       });
   } catch( error ) {
     console.log('There was an error /weather path');
+    errorHandling(error, 500, 'Sorry, something went wrong.');
+  }
+});
+
+app.get('/events/', (request, response) => {
+  try {
+    let lat = request.query.data.latitude;
+    let long = request.query.data.longitude;
+
+    let eventsURL = `https://www.eventbriteapi.com/v3/events/search?location.latitude=${lat}&location.longitude=${long}&token=${process.env.EVENTBRITE_API_KEY}`;
+
+    superagent
+      .get(eventsURL)
+      .end((err, eventData) => {
+
+        let receivedEvents = eventData.body.events.slice(0, 20);
+        const events = receivedEvents.map((data) => {
+          return new Event(data.url, data.name.text, data.start.local, data.description.text);
+        });
+
+        response.status(200).send(events);
+      });
+  } catch (error) {
+    console.log('There was an error /events path');
     errorHandling(error, 500, 'Sorry, something went wrong.');
   }
 });
