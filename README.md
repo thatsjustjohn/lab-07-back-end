@@ -1,6 +1,6 @@
 # Node Server backend
 
-**Author**: John & Tisha
+**Author**: John & John
 **Version**: 1.0.0 (increment the patch/fix version number if you make more commits past your first submission)
 
 ## Overview
@@ -28,25 +28,35 @@ Node / Express
 
 Number and name of feature: Respository
 
-Estimate of time needed to complete: 45 min
+Estimate of time needed to complete: 10 min
 
-Start time: 9:10
+Start time: 9:40
 
-Finish time: 9:55
+Finish time: 10:00
 
-Actual time needed to complete: 45 min
+Actual time needed to complete: 20 min
 
-Number and name of feature: Location
+Number and name of feature: Weather Map
 
-Estimate of time needed to complete: 60 min
+Estimate of time needed to complete: 30 min
 
 Start time: 10:00
 
-Finish time: 11:00
+Finish time: 10:20
 
-Actual time needed to complete: 60 min
+Actual time needed to complete: 20 min
 
-Number and name of feature: Weather
+Number and name of feature: Location API
+
+Estimate of time needed to complete: 20 min
+
+Start time: 10:30
+
+Finish time: 10:50
+
+Actual time needed to complete: 20 min
+
+Number and name of feature: Weather API
 
 Estimate of time needed to complete: 45 min
 
@@ -56,12 +66,12 @@ Finish time: 11:30
 
 Actual time needed to complete: 30 min
 
-Number and name of feature: Errors
+Number and name of feature: EventBrite API
 
-Estimate of time needed to complete: 5 min
+Estimate of time needed to complete: 60 min
 
 Start time: 11:35
 
-Finish time: 11:40
+Finish time: 12:25
 
-Actual time needed to complete: 5 min
+Actual time needed to complete: 50 min
