@@ -65,10 +65,16 @@ app.get('/location', (request, response) => {
 app.get('/weather', (request, response) => {
   // check for json file
   try {
-    let weatherData = require('./data/darksky.json');
-    console.log(request.query.data);
-    let weather = getDailyWeather(weatherData);
-    response.send(weather);
+    let lat = request.query.data.latitude;
+    let long = request.query.data.longitude;
+
+    let weatherURL = `https://api.darksky.net/forecast/${process.env.WEATHER_API_KEY}/${lat},${long}`;
+    superagent
+      .get(weatherURL)
+      .end((err, weatherData) => {
+        let weather = getDailyWeather(weatherData.body);
+        response.send(weather);
+      });
   } catch( error ) {
     console.log('There was an error /weather path');
     errorHandling(error, 500, 'Sorry, something went wrong.');
