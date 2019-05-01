@@ -4,16 +4,17 @@ require('dotenv').config();
 const express = require('express');
 const app = express();
 const cors = require('cors');
+const superagent = require('superagent');
 
 // use environment variable, or, if it's undefined, use 3000 by default
 const PORT = process.env.PORT || 3000;
 
 // Constructor for the Location response from API
-const LocationResponse = function(request, formatted_query, lat, long){
-  this.search_query = request.query.data;
-  this.formatted_query = formatted_query;
-  this.latitude = lat;
-  this.longitude = long;
+const Location = function(queryData, res){
+  this.search_query = queryData;
+  this.formatted_query = res.results[0].formatted_address;
+  this.latitude = res.results[0].geometry.location.lat;
+  this.longitude = res.results[0].geometry.location.lng;
 };
 
 // Constructor for a DaysWeather.
@@ -44,11 +45,17 @@ app.use(express.static('./public'));
 
 // express endpoints
 app.get('/location', (request, response) => {
-  //check for json file
+  // check for json file
   try {
-    let geoData = require('./data/geo.json');
-    let currentLocation = new LocationResponse(request, geoData.results[0].formatted_address, geoData.results[0].geometry.location.lat, geoData.results[0].geometry.location.lng);
-    response.send(currentLocation);
+    let queryData = request.query.data;
+    let geocodeURL = `https://maps.googleapis.com/maps/api/geocode/json?address=${queryData}&key=${process.env.GEOCODE_API_KEY}`;
+    superagent.get(geocodeURL)
+      .end( (err, googleMapsApiResponse) => {
+        // turn it into a location instance
+        const location = new Location(queryData, googleMapsApiResponse.body);
+        // send that as our response to our frontend
+        response.send(location);
+      });
   } catch( error ) {
     console.log('There was an error /location path');
     errorHandling(error, 500, 'Sorry, something went wrong.');
@@ -56,7 +63,7 @@ app.get('/location', (request, response) => {
 });
 
 app.get('/weather', (request, response) => {
-  //check for json file
+  // check for json file
   try {
     let weatherData = require('./data/darksky.json');
     console.log(request.query.data);
