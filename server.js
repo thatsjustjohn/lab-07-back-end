@@ -23,13 +23,12 @@ const DaysWeather = function(forecast, time) {
 };
 
 // Function for getting all the daily weather
-function getDailyWeather(weatherData) {
-  let dailyWeather = [];
-  let weatherLength = weatherData.daily.data.length;
-  for (let i = 0; i < weatherLength; i++) {
-    let day = new DaysWeather(weatherData.daily.data[i].summary, weatherData.daily.data[i].time);
-    dailyWeather.push(day);
-  }
+function getDailyWeather(weatherData){
+  let data = weatherData.daily.data;
+  console.log(data);
+  const dailyWeather = data.map(element => (new DaysWeather(element.summary, element.time)));
+  console.log(dailyWeather);
+
   return dailyWeather;
 }
 
